@@ -1,9 +1,14 @@
 class StringCalculator
   def self.add(input)
     return 0 if input.empty?
-    return input.to_i if input =~ /^\d+$/
+
+    if input.start_with?("//")
+      delimiter, input = input.match(%r{//(.)\n(.*)})[1..2]
+      numbers = input.split(/#{Regexp.escape(delimiter)}/)
+    else
+      numbers = input.split(/[\n,]/)
+    end
   
-    numbers = input.split(/[\n,]/).map(&:to_i)
-    numbers.sum
+    numbers.map(&:to_i).sum
   end
 end
